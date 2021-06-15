@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Прикачване</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">АНАЛИЗ</button>
+</form>
+{% if urls %}
+<p>Uploaded files</p>
+<ul>
+  {% for url in urls%}
+  <li><a href="{{ url }}">{{ url }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

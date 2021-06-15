@@ -1,0 +1,9 @@
+<ul class="nav flex-column" id="stickyNavigator">
+    <li class="nav-item"><a class="nav-link" href="{% url 'freq_dist' item.id %}">Честотно разпределение</a>
+    </li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'trend' item.id %}">Мерки на централната
+        тенденция</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'spread' item.id %}">Мерки на разсейване</a></li>
+    <li class="nav-item"><a class="nav-link" href="{% url 'correlations' item.id %}">Корелационен анализ</a>
+    </li>
+  </ul>

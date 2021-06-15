@@ -1,0 +1,124 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}Анализи{% endblock %}
+{% block header %}Анализи{% endblock %}
+{% block header_desc %}Списък на направените от вас анализи{% endblock %}
+
+
+{% block content %}
+<div class="container mt-n10">
+  <div class="row">
+    <div class="col">
+      <div class="card h-100">
+        <div class="card-header">Списък с анализи</div>
+        <div class="card-body h-100 d-flex flex-column justify-content-center py-5 py-xl-4">
+          <table id="analisysListTable" class="table table-striped table-bordered table-responsive-sm rounded"
+            style="width: 100%;" cellspacing="0">
+            <thead>
+              <tr>
+                <th>Дата</th>
+                <th>Платформа</th>
+                <th>Тип платформа</th>
+                <th>Предмет</th>
+                <th>URL Адрес</th>
+                <th>Действия</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for row in uploaded_analysis %}
+              <tr>
+                <td>{{ row.date_added|date:"d.m.Y, H:i" }}</td>
+                <td>{{ row.platform_name }}</td>
+                <td>{{ row.platform_type }}</td>
+                <td>{{ row.course_name }}</td>
+                <td>
+                  <a href="{{ row.platform_url }}" target="_blank">Link <i class="fas fa-external-link-alt"></i></a>
+                </td>
+                <td>
+                  <a href="{% url 'analysis_item' row.pk %}"
+                    class="btn btn-datatable btn-icon btn-transparent-dark mr-2">
+                    <i class="fas fa-external-link-alt fa-lg"></i></a>
+                  <button class="btn btn-datatable btn-icon btn-transparent-dark delete" id="{{ row.id }}">
+                    <i class="fas fa-trash-alt fa-lg"></i></button>
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.24/css/dataTables.bootstrap4.min.css">
+{% endblock %}
+
+{% block helpers %}
+<div class="modal fade" id="cofirmModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <p class="h3">
+          Сигурни ли сте, че искате да премахнете записа?
+        </p>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" type="button" data-dismiss="modal">
+          <i class="fas fa-times mr-2"></i> Затвори
+        </button>
+        <button type="button" name="confirm" id="confirm" class="btn btn-danger confirm">
+          <i class="fas fa-check mr-2"></i> Потвърди
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<input type="hidden" name="upload_id" id="upload_id">
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
+
+<script>
+
+  $(document).ready(function () {
+    var csrftoken = Cookies.get('csrftoken');
+
+    $('#analisysListTable').DataTable({
+
+    });
+
+    $("#analisysListTable").on('click', '.delete', function () {
+      $('#cofirmModal').modal('show');
+      $('#upload_id').val($(this).attr("id"));
+    });
+
+    $("#cofirmModal").on('click', '.confirm', function (event) {
+      event.preventDefault();
+      var upload_id = $('#upload_id').val();
+      $('#confirm').attr('disabled', 'disabled');
+      $.ajax({
+        url: "{% url 'api_delete' %}",
+        headers: { 'X-CSRFToken': csrftoken },
+        method: "POST",
+        data: { upload_id: upload_id },
+        success: function (data) {
+          $('#cofirmModal').modal('hide');
+          $('#confirm').attr('disabled', false);
+          if(data.status = 200){
+            window.location.reload();
+          }
+        }
+      });
+    });
+
+  });
+
+</script>
+
+{% endblock %}

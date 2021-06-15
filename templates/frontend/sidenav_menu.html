@@ -1,0 +1,38 @@
+<nav class="sidenav shadow-right sidenav-light">
+    <div class="sidenav-menu">
+        <div class="nav accordion" id="accordionSidenav">
+            
+            <!-- Sidenav Menu Heading (Core)-->
+            <div class="sidenav-menu-heading">Основни</div>
+            <!-- Sidenav Accordion (Dashboard)-->
+            <!-- <a class="nav-link collapsed" href="javascript:void(0);" data-toggle="collapse"
+                data-target="#collapseDashboard" aria-expanded="false" aria-controls="collapseDashboard">
+                <div class="nav-link-icon"><i data-feather="activity"></i></div>
+                Табло
+                <div class="sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+            </a>
+            <div class="collapse" id="collapseDashboard" data-parent="#accordionSidenav">
+                <nav class="sidenav-menu-nested nav accordion" id="accordionSidenavPages">
+                    <a class="nav-link" href="{% url 'home' %}">Начало</a>
+                    <a class="nav-link" href="{% url 'analysis' %}">Качени данни</a>
+                </nav>
+            </div> -->
+            <a class="nav-link" href="{% url 'home' %}">
+                <div class="nav-link-icon"><i class="fas fa-file-import"></i></div>
+                Начало
+            </a>
+            <!-- Sidenav Link (Tables)-->
+            <a class="nav-link" href="{% url 'analysis' %}">
+                <div class="nav-link-icon"><i class="fas fa-list"></i></div>
+                Качени данни
+            </a>
+        </div>    
+    </div>
+    <!-- Sidenav Footer-->
+    <div class="sidenav-footer">
+        <div class="sidenav-footer-content">
+            <div class="sidenav-footer-subtitle">Logged in as:</div>
+            <div class="sidenav-footer-title">{{user.first_name}} {{user.last_name}}</div>
+        </div>
+    </div>
+</nav>
